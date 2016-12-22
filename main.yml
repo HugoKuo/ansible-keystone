@@ -1,0 +1,8 @@
+---
+# This playbook deploys a single keystone server
+
+- hosts : all
+
+  roles : 
+    - KS-kilo
+    

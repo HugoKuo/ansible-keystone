@@ -1,0 +1,17 @@
+---
+
+# To install and start Keystone server
+# This playbook is for Kilo release
+# Author : Hugo Kuo <hugo@swiftstack.com>
+
+- name: Add Kilo Cloud Archive repo
+  user: swiftstack
+  become: true
+  become_method: sudo
+  apt_repository:
+    repo: cloud-archive:kilo
+  apt:
+    update_cache: yes
+
+
+   
