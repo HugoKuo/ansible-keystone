@@ -2,7 +2,9 @@
 # This playbook deploys a single keystone server
 
 - hosts : all
-
+  remote_user : swiftstack
+  become: yes
+  become_method: sudo
   roles : 
     - KS-kilo
     
