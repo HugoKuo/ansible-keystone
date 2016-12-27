@@ -15,39 +15,17 @@
       update_cache: yes
       allow_unauthenticated: yes
 
-  - name: Install MySQL
-    apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
-    sudo: yes
-    with_items:
-    - python-mysqldb
-    - mysql-server
-  - name: Start the MySQL service
-    sudo: yes
-    service: 
-      name: mysql 
-      state: started
-      enabled: true
-  - name: update mysql root password for all root accounts
-    sudo: yes
-    vars:
-      mysql_root_password: swiftstack
-    mysql_user: 
-      name: root 
-      host: "{{ item }}" 
-      password: "{{ mysql_root_password }}"
-      login_user: root
-      login_password: "{{ mysql_root_password }}"
-      check_implicit_admin: yes
-      priv: "*.*:ALL,GRANT"
-    with_items:
-      - "{{ ansible_hostname }}"
-      - 127.0.0.1
-      - ::1
-      - localhost 
+  - include: mysql.yaml
 
-  - name: Create a new database with name 'keystone'
-    mysql_db:
-      name: keystone
-      state: present
-      login_password: swiftstack
-      login_user: root
+  - include: keystone_conf.yaml
+
+  - name: Checking Tables of Keystone DB
+    shell: mysql -uroot -pswiftstack keystone -e "SHOW TABLES LIKE 'domain'" | grep domain
+    changed_when: table_exist == "" 
+    ignore_errors: yes
+    register: table_exist
+
+  - name: Populate initial Keystone DB tables
+    command: keystone-manage db_sync 
+    when: 
+      - table_exist.stdout == ""
