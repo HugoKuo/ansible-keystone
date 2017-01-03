@@ -44,6 +44,11 @@
       backup: yes
     register: option_logfile
 
+
+###
+# To refine this task by changing it as handler instead of a task. 
+# Then notify the handler if above tasks are changed 
+###
   - name: Restart Keystone Server
     service:
       name: keystone

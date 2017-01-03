@@ -1,0 +1,4 @@
+- name: Run Keystone initial data script 
+  script: common-keystone-data.sh
+  tags:
+    - test

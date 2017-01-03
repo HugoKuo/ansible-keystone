@@ -10,10 +10,13 @@
 
   - name: Install Keystone package
     apt: 
-      name: keystone
+      name: "{{ item }}"
       state: latest
       update_cache: yes
       allow_unauthenticated: yes
+    with_items:
+      - keystone
+      - python-openstackclient
 
   - include: mysql.yaml
 
@@ -29,3 +32,11 @@
     command: keystone-manage db_sync 
     when: 
       - table_exist.stdout == ""
+
+  - include: common-data.yaml
+  - copy:
+      src: source_file
+      dest: ~/
+      owner: swiftstack
+      group: swiftstack
+      
