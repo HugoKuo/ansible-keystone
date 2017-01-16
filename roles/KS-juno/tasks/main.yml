@@ -4,9 +4,9 @@
 # This playbook is for Kilo release
 # Author : Hugo Kuo <hugo@swiftstack.com>
 
-  - name: Add Kilo Cloud Archive repo
+  - name: Add Juno Cloud Archive repo
     apt_repository:
-      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main
+      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/juno main
 
   - name: Install Keystone package
     apt: 

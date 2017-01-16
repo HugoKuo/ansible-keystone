@@ -7,6 +7,7 @@
       backup: yes
     register: option_db
 
+# The pipline is needed to be corrected, no s3 extension for pulic API endpoint.
 #  - name: Modify Keystone paste INI
 #    ini_file:
 #      dest: /etc/keystone/keystone-paste.ini
@@ -58,4 +59,4 @@
         option_log1.changed or 
         option_log2.changed or 
         option_logfile.changed 
-        #option_pipeline.changed or 
+ #       option_pipeline.changed or 

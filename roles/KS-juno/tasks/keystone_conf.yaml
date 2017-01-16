@@ -7,15 +7,15 @@
       backup: yes
     register: option_db
 
-#  - name: Modify Keystone paste INI
-#    ini_file:
-#      dest: /etc/keystone/keystone-paste.ini
-#      section: pipeline:public_api
-#      option: pipeline
-#      value: sizelimit url_normalize build_auth_context token_auth admin_token_auth xml_body_v2 json_body ec2_extension s3_extension user_crud_extension public_service
-#      mode: 0644
-#      backup: yes
-#    register: option_pipeline
+  - name: Modify Keystone paste INI
+    ini_file:
+      dest: /etc/keystone/keystone-paste.ini
+      section: pipeline:public_api
+      option: pipeline
+      value: sizelimit url_normalize build_auth_context token_auth admin_token_auth xml_body_v2 json_body ec2_extension s3_extension user_crud_extension public_service
+      mode: 0644
+      backup: yes
+    register: option_pipeline
 
   - name: Enable Keystone Logs
     ini_file:
@@ -55,7 +55,7 @@
       state: restarted
     when: 
       - option_db.changed or
+        option_pipeline.changed or 
         option_log1.changed or 
         option_log2.changed or 
         option_logfile.changed 
-        #option_pipeline.changed or 

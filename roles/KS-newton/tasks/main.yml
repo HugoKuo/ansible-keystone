@@ -6,7 +6,7 @@
 
   - name: Add Kilo Cloud Archive repo
     apt_repository:
-      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main
+      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/newton main
 
   - name: Install Keystone package
     apt: 

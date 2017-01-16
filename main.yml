@@ -6,5 +6,5 @@
   become: yes
   become_method: sudo
   roles : 
-    - KS-kilo
-    
+    - KS-mitaka
+    - v2-data    

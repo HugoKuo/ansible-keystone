@@ -7,6 +7,7 @@
       backup: yes
     register: option_db
 
+# This pipline works in juno only. It's needed to be corrected for support s3 over public API endpoint.
 #  - name: Modify Keystone paste INI
 #    ini_file:
 #      dest: /etc/keystone/keystone-paste.ini
@@ -16,6 +17,15 @@
 #      mode: 0644
 #      backup: yes
 #    register: option_pipeline
+
+  - name: Configure the super admin token 
+    ini_file: 
+      dest: /etc/keystone/keystone.conf
+      section: DEFAULT
+      option: admin_token
+      value: ADMIN
+      backup: no
+    register: option_admin_token
 
   - name: Enable Keystone Logs
     ini_file:
@@ -55,6 +65,7 @@
       state: restarted
     when: 
       - option_db.changed or
+        option_admin_token.changed or
         option_log1.changed or 
         option_log2.changed or 
         option_logfile.changed 

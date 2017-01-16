@@ -1,0 +1,6 @@
+---
+
+- name: Add v2 sameple data 
+  script: "populate_v2_data.sh '{{ SWIFT_PUBLIC_ENDPOINT }}' '{{ SWIFT_INTERNAL_ENDPOINT }}' '{{ SWIFT_ADMIN_ENDPOINT }}' '{{ SWIFT_ENDPOINT_SCHEME }}'"
+  tags: 
+    - test
