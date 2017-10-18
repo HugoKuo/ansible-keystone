@@ -1,42 +1,16 @@
 ---
-
 # To install and start Keystone server
 # This playbook is for Kilo release
-# Author : Hugo Kuo <hugo@swiftstack.com>
+# Author : Hugo Kuo <hugo@swiftstack.com> and Johnny Wang <johnny@swiftstack.com>
 
-  - name: Add Kilo Cloud Archive repo
-    apt_repository:
-      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/newton main
+# 1 install and configure mysql
+  - include: 1-mysql.yaml
 
-  - name: Install Keystone package
-    apt: 
-      name: "{{ item }}"
-      state: latest
-      update_cache: yes
-      allow_unauthenticated: yes
-    with_items:
-      - keystone
-      - python-openstackclient
+# 2 install and configure keystone
+  - include: 2-keystone.yaml
 
-  - include: mysql.yaml
+# 3 bootstrap keystone and 4 restart keystone
+  - include: 3-keystone-bootstrap.yaml
 
-  - include: keystone_conf.yaml
-
-  - name: Checking Tables of Keystone DB
-    shell: mysql -uroot -pswiftstack keystone -e "SHOW TABLES LIKE 'domain'" | grep domain
-    changed_when: table_exist == "" 
-    ignore_errors: yes
-    register: table_exist
-
-  - name: Populate initial Keystone DB tables
-    command: keystone-manage db_sync 
-    when: 
-      - table_exist.stdout == ""
-
-  - include: common-data.yaml
-  - copy:
-      src: source_file
-      dest: ~/
-      owner: swiftstack
-      group: swiftstack
-      
+# 4 source for privilege and 6 prepare swift data
+  - include: 4-common-data.yaml
