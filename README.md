@@ -32,5 +32,5 @@ To deploy OpenStack Keystone server with Ansible
 * Target OS check function
 * S3 support for public API endpoint from Kilo to Newton.
 * Generate command template
-* Refine the client command from keystoneclient to openstack client from Liberty to Newton.
+* ~~Refine the client command from keystoneclient to openstack client from Liberty to Newton.~~
 * Integrate with LXD 
