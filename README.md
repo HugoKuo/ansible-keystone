@@ -21,8 +21,8 @@ To deploy OpenStack Keystone server with Ansible
 
 0. prepare Ubuntu 1604 VM for above or newer keystone version.
 1. Specify the release version of openstack in main.yaml by the role.
-2. Edit the Global Var - inventory, mysql username and password; keystone and swift endpoint ip address in hosts.
-3. Edit the Role Level Var - keystone version in `roles/v2-data/vars/main.yaml` and `roles/KS-{keystone version}/2-keystone.yaml`.
+2. Edit the Global Var - inventory, mysql username and password; keystone and swift endpoint ip address in hosts file and comment out `- v2-data` in main.yaml.
+3. Edit the Role Level Var - keystone version in `roles/KS-{ksytone version}/vars/main.yaml` and `roles/KS-{keystone version}/tasks/2-keystone.yaml`.
 4. Sync the SSH-key to target host's swiftstack user or just use prep.sh for your VM preparation.
 5. Run the playbook `$ ansible-playbook -i hosts main.yaml`.
 
