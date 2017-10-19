@@ -17,7 +17,7 @@ To deploy OpenStack Keystone server with Ansible
 4. Sync the SSH-key to target host's swiftstack user. 
 5. Run the playbook `$ ansible-playbook -i hosts main.yaml`.
 
-* [ KS-newton | KS-ocata | KS-pike | KS-queens (TBC)]
+* [ KS-newton | KS-ocata | KS-pike | KS-queens (Staging Only)]
 
 0. prepare Ubuntu 1604 VM for above or newer keystone version.
 1. Specify the release version of openstack in main.yaml by the role.

@@ -1,0 +1,96 @@
+#  - name: 2.1 Add {{ KEYSTONE_VERSION }} Cloud Archive repo
+#    apt_repository:
+#      repo: deb http://ubuntu-cloud.archive.canonical.com/ubuntu xenial-updates/pike main
+
+  - name: 2.1.1 For {{ KEYSTONE_VERSION }} install software-properties-common
+    shell: apt install -y software-properties-common
+    register: shell_result
+    ignore_errors: yes
+  - debug: var=shell_result.stdout_lines
+
+  - name: 2.1.2 Add {{ KEYSTONE_VERSION }} Cloud Archive repo
+    shell: add-apt-repository ppa:ubuntu-cloud-archive/queens-staging -y
+    register: shell_result
+    ignore_errors: yes
+  - debug: var=shell_result.stdout_lines
+
+  - name: 2.1.3 For {{ KEYSTONE_VERSION }} apt update
+    shell: apt update -y
+    register: shell_result
+    ignore_errors: yes
+  - debug: var=shell_result.stdout_lines
+
+  - name: 2.1.4 For {{ KEYSTONE_VERSION }} apt dist-update
+    shell: apt dist-upgrade -y
+    register: shell_result
+    ignore_errors: yes
+  - debug: var=shell_result.stdout_lines
+
+  - name: 2.2 Install Keystone package
+    apt:
+      name: "{{ item }}"
+      state: latest
+      update_cache: yes
+      allow_unauthenticated: yes
+    with_items:
+      - keystone
+      - apache2
+      - libapache2-mod-wsgi
+      - python-openstackclient
+
+  - name: 2.3 Modify Keystone Configuration
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: database
+      option: connection
+      value: mysql+pymysql://keystone:swiftstack@localhost/keystone
+      backup: yes
+    register: option_db
+
+  - name: 2.4 configure the Fernet token provider
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: token
+      option: provider
+      value: fernet
+      backup: yes
+    register: option_provider
+
+#  - name: Modify Keystone paste INI
+#    sudo: yes
+#    sudo_user: keystone
+#    ini_file:
+#      dest: /etc/keystone/keystone-paste.ini
+#      section: pipeline:public_api
+#      option: pipeline
+#      value: sizelimit url_normalize build_auth_context token_auth admin_token_auth xml_body_v2 json_body ec2_extension s3_extension user_crud_extension public_service
+#      mode: 0644
+#      backup: yes
+#    register: option_pipeline
+
+#  - name: Enable Keystone Logs
+#    ini_file:
+#      dest: /etc/keystone/keystone.conf
+#      section: DEFAULT
+#      option: debug
+#      value: true
+#      backup: yes
+#    register: option_log1
+
+#  - name: Enable Verbose Logs
+#    ini_file:
+#      dest: /etc/keystone/keystone.conf
+#      section: DEFAULT
+#      option: verbose
+#      value: true
+#      backup: yes
+#    register: option_log2
+
+#  - name: Change Log Files
+#    ini_file:
+#      dest: /etc/keystone/keystone.conf
+#      section: DEFAULT
+#      option: log_file
+#      value: keystone.log
+#      backup: yes
+#    register: option_logfile
