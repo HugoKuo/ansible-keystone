@@ -1,0 +1,16 @@
+---
+# To install and start Keystone server
+# This playbook is for Kilo release
+# Author : Hugo Kuo <hugo@swiftstack.com> and Johnny Wang <johnny@swiftstack.com>
+
+# 1 install and configure mysql
+  - include: 1-mysql.yaml
+
+# 2 install and configure keystone
+  - include: 2-keystone.yaml
+
+# 3 bootstrap keystone and 4 restart keystone
+  - include: 3-keystone-bootstrap.yaml
+
+# 4 source for privilege and 6 prepare swift data
+  - include: 4-common-data.yaml
