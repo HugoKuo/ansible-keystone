@@ -40,6 +40,6 @@ echo "====Create Swift Service===="
 openstack service create --name swift --description object-store object-store
 
 echo "====Create Swift Endpoint in Keystone===="
-openstack endpoint create --region RegionOne swift admin http://$swift_host:80/v3
-openstack endpoint create --region RegionOne swift internal http://$swift_host:80/v3
-openstack endpoint create --region RegionOne swift public http://$swift_host:443/v3
+openstack endpoint create --region RegionOne swift admin "http://$swift_host/v1"
+openstack endpoint create --region RegionOne swift internal "http://$swift_host/v1/KEY_\$(tenant_id)s"
+openstack endpoint create --region RegionOne swift public "http://$swift_host/v1/KEY_\$(tenant_id)s"

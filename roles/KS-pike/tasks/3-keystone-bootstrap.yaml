@@ -29,9 +29,9 @@
 - name: 3.5 bootstrap keystone
   command: |
     keystone-manage bootstrap --bootstrap-password ADMIN
-    --bootstrap-admin-url http://localhost:35357/v3/
-    --bootstrap-internal-url http://localhost:35357/v3/
-    --bootstrap-public-url http://localhost:5000/v3/
+    --bootstrap-admin-url http://localhost:35357/v3
+    --bootstrap-internal-url http://localhost:35357/v3
+    --bootstrap-public-url http://localhost:5000/v3
     --bootstrap-region-id RegionOne
   register: command_result
 - debug: var=command_result.stdout_lines   
