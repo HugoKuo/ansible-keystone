@@ -23,7 +23,7 @@
   - include: keystone_conf.yaml
 
   - name: Checking Tables of Keystone DB
-    shell: mysql -uroot -pswiftstack keystone -e "SHOW TABLES LIKE 'domain'" | grep domain
+    shell: mysql -u root -p swiftstack keystone -e "SHOW TABLES LIKE 'domain'" | grep domain
     changed_when: table_exist == "" 
     ignore_errors: yes
     register: table_exist
@@ -37,6 +37,6 @@
   - copy:
       src: source_file
       dest: ~/
-      owner: swiftstack
-      group: swiftstack
+      owner: root
+      group: root
       

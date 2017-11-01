@@ -1,0 +1,74 @@
+  - name: 1.1 Install MySQL
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+    sudo: yes
+    with_items:
+    - python-mysqldb
+    - mysql-server
+
+  - name: 1.2 Start the MySQL service
+    sudo: yes
+    service:
+      name: mysql
+      state: started
+      enabled: true
+
+  - name: 1.3 update mysql root password for all root accounts
+    sudo: yes
+    mysql_user:
+      name: "{{ mysql_root_username }}"
+      host: "{{ item }}"
+      password: "{{ mysql_root_password }}"
+      login_user: "{{ mysql_root_username }}"
+      login_password: "{{ mysql_root_password }}"
+      check_implicit_admin: yes
+      priv: "*.*:ALL,GRANT"
+    with_items:
+      - "{{ keystone_host }}"    
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
+
+  - name: 1.4 Create a new database with name 'keystone'
+    mysql_db:
+      name: keystone
+      state: present      
+      login_user: "{{ mysql_root_username }}"
+      login_password: "{{ mysql_root_password }}"
+
+  - name: 1.5 update mysql keystone password for all root accounts
+    sudo: yes
+    mysql_user:
+      name: keystone
+      host: "{{ item }}"
+      password: "{{ mysql_root_password }}"
+      login_user: "{{ mysql_root_username }}"
+      login_password: "{{ mysql_root_password }}"
+      check_implicit_admin: yes
+      priv: "*.*:ALL,GRANT"
+    with_items:
+      - "{{ keystone_host }}"    
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
+      
+#  - name: Set user privileges
+#    mysql_user:
+#      user=keystone
+#      password={{ mysql_root_password }}
+#      state=present
+#      append_privs=yes
+#      priv={{ item }}
+#    with_items:
+#      - 'keystone.*:ALL'
+#      - '*.*:SUPER,RELOAD,SHOW\ DATABASES'
+      
+# grant all PRIVILEGES on <db>.* to <user>@'localhost'; 
+# 
+# - name: Set mysql user privileges
+#   mysql_user:
+#     name=<user>
+#     priv="<db>.*:ALL"
+#     state=present
+#

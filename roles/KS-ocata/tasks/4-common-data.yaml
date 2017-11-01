@@ -1,0 +1,21 @@
+- name: 4.1 change fernet-keys permissions to keystone
+  file: path=/etc/keystone/fernet-keys owner=keystone group=keystone mode=0775 state=directory recurse=yes
+
+- name: 4.2 change credential-keys permissions to keystone
+  file: path=/etc/keystone/credential-keys owner=keystone group=keystone mode=0775 state=directory recurse=yes   
+
+- name: 5.1 copy source file to local 
+  copy:
+    src: source_file
+    dest: ~/
+    owner: root
+    group: root
+      
+- name: 5.2 source ~/source_file/user-admin.source
+  shell: "echo ~/source_file/user-admin.source"   
+
+- name: 6.1 Run Keystone initial swift data script 
+  script: new-common-keystone-data.sh "{{ swift_host }}"
+  register: shell_result
+  ignore_errors: yes
+- debug: var=shell_result.stdout_lines

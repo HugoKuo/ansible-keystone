@@ -1,0 +1,42 @@
+- name: 3.1 Checking Keystone DB, try table user
+  shell: mysql -uroot -pswiftstack keystone -e "SHOW TABLES LIKE 'user'" | grep user
+  changed_when: table_exist == "" 
+  ignore_errors: yes
+  register: table_exist
+- debug: var=table_exist.stdout_lines
+  
+- name: 3.2 Populate initial Keystone DB tables as keystone ( user )
+  command: keystone-manage db_sync 
+  become: true
+  become_method: su
+  become_user: keystone
+  become_flags: '-s /bin/sh'
+  when: 
+    - table_exist.stdout == ""
+  register: command_result
+- debug: var=command_result.stdout_lines    
+    
+- name: 3.3 fernet_setup
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone 
+  register: command_result
+- debug: var=command_result.stdout_lines
+
+- name: 3.4 credential_setup
+  command: keystone-manage credential_setup --keystone-user keystone --keystone-group keystone 
+  register: command_result
+- debug: var=command_result.stdout_lines
+   
+- name: 3.5 bootstrap keystone
+  command: |
+    keystone-manage bootstrap --bootstrap-password ADMIN
+    --bootstrap-admin-url http://localhost:35357/v3/
+    --bootstrap-internal-url http://localhost:35357/v3/
+    --bootstrap-public-url http://localhost:5000/v3/
+    --bootstrap-region-id RegionOne
+  register: command_result
+- debug: var=command_result.stdout_lines   
+   
+- name: 3.6 Restart apache2 - Keystone Server again 
+  service:
+    name: apache2
+    state: restarted
