@@ -1,23 +1,21 @@
-  - name: Install MySQL
+  - name: 1.1 Install MySQL
     apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
     sudo: yes
     with_items:
     - python-mysqldb
     - mysql-server
 
-  - name: Start the MySQL service
+  - name: 1.2 Start the MySQL service
     sudo: yes
     service:
       name: mysql
       state: started
       enabled: true
 
-  - name: update mysql root password for all root accounts
+  - name: 1.3 update mysql root password for all root accounts
     sudo: yes
-    vars:
-      mysql_root_password: swiftstack
     mysql_user:
-      name: root
+      name: "{{ mysql_root_username }}"
       host: "{{ item }}"
       password: "{{ mysql_root_password }}"
       login_user: root
@@ -25,15 +23,15 @@
       check_implicit_admin: yes
       priv: "*.*:ALL,GRANT"
     with_items:
+      - "{{ keystone_host }}"    
       - "{{ ansible_hostname }}"
       - 127.0.0.1
       - ::1
       - localhost
 
-  - name: Create a new database with name 'keystone'
+  - name: 1.4 Create a new database with name 'keystone'
     mysql_db:
       name: keystone
       state: present
-      login_password: swiftstack
       login_user: root
-
+      login_password: "{{ mysql_root_password }}"
