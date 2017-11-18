@@ -1,8 +1,14 @@
 - name: 4.1 change fernet-keys permissions to keystone
   file: path=/etc/keystone/fernet-keys owner=keystone group=keystone mode=0775 state=directory recurse=yes
+  when: TOKEN_VERSION == "fernet"
 
 - name: 4.2 change credential-keys permissions to keystone
-  file: path=/etc/keystone/credential-keys owner=keystone group=keystone mode=0775 state=directory recurse=yes   
+  file: path=/etc/keystone/credential-keys owner=keystone group=keystone mode=0775 state=directory recurse=yes 
+  when: TOKEN_VERSION == "fernet"
+
+- name: 4.1 change pki-keys permissions to keystone
+  file: path=/etc/keystone/ssl/certs owner=keystone group=keystone mode=0775 state=directory recurse=yes
+  when: TOKEN_VERSION == "pki" 
 
 - name: 5.1 copy source file to local 
   copy:

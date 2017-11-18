@@ -29,6 +29,87 @@
       value: fernet
       backup: yes
     register: option_provider
+    when: TOKEN_VERSION == "fernet"
+
+  - name: 2.4 configure the pki token provider
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: token
+      option: provider
+      value: keystone.token.providers.pki.Provider
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.1 configure the pki token certfile signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: certfile
+      value: /etc/keystone/ssl/certs/signing_cert.pem
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.2 configure the pki token keyfile signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: keyfile
+      value: /etc/keystone/ssl/private/signing_key.pem
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.3 configure the pki token ca_certs signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: ca_certs
+      value: /etc/keystone/ssl/certs/ca.pem
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.4 configure the pki token ca_key signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: ca_key
+      value: /etc/keystone/ssl/private/cakey.pem
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.5 configure the pki token key_size signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: key_size
+      value: 2048
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.6 configure the pki valid_days token signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: valid_days
+      value: 3650
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
+
+  - name: 2.4.7 configure the pki token cert_subject signing
+    ini_file:
+      dest: /etc/keystone/keystone.conf
+      section: signing
+      option: cert_subject
+      value: /C=US/ST=Unset/L=Unset/O=Unset/CN=ss03.swiftstack.idv
+      backup: yes
+    register: option_provider
+    when: TOKEN_VERSION == "pki"
 
 #  - name: Modify Keystone paste INI
 #    sudo: yes

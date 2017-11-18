@@ -28,6 +28,12 @@ To deploy OpenStack Keystone server with Ansible
 4. Sync the SSH-key to target host's swiftstack user or just use prep.sh for your VM preparation.
 5. Run the playbook `$ ansible-playbook -i hosts main.yaml`.
 
+### PS - For PKI token
+
+* [ KS-newton(only) ]
+
+0. We provide a `PKI` token option except the default `Fernet` token. However you have to update `ansible-keystone/roles/KS-newton/vars/main.yaml` to update from `TOKEN_VERSION: fernet` to `TOKEN_VERSION: pki`.
+
 ### TO-DO
 
 * Insert v3 sample data (optional)

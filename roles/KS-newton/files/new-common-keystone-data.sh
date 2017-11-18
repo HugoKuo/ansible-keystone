@@ -27,8 +27,10 @@ openstack project create --domain default --description "Swift Service Project" 
 openstack user create --domain default --password swift swift
 openstack role create swiftoperator
 openstack role add --project swift --user swift swiftoperator
+openstack role add --project admin --user admin swiftoperator
 openstack role create ResellerAdmin
 openstack role add --project swift --user swift ResellerAdmin
+openstack role add --project admin --user admin ResellerAdmin
 openstack role add --project swift --user swift admin
 openstack role add --project swift --user swift _member_
 
