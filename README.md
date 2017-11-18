@@ -30,7 +30,7 @@ To deploy OpenStack Keystone server with Ansible
 
 ### Keystone Middleware Configuration Demo
 
-* If you are using SwiftStack Keystone middleware, you have to enable `Keystone Auth` and `Keystone Auth Token Support`. The `Keystone Auth Token Support` configuration example is as below.
+* If you are using SwiftStack Keystone middleware, you have to enable `Keystone Auth` and `Keystone Auth Token Support`. The `Keystone Auth Token Support` configuration example (Assume my Keystone IP is 172.28.128.43) is as below.
 ![keystonemiddlewaredemo](https://user-images.githubusercontent.com/1863416/32983001-a4d40e30-cc42-11e7-8f2a-e2c378e07ecc.png)
 
 ### PS - For PKI token
