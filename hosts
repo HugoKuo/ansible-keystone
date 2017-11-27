@@ -1,7 +1,7 @@
 [keystone]
-172.28.128.44
+172.28.128.43
 [all:vars]
-keystone_host=172.28.128.44
+keystone_host=172.28.128.43
 swift_host=172.28.128.42
 mysql_root_username="root"
 mysql_root_password="swiftstack"
